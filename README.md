@@ -1,0 +1,2 @@
+# Prism
+simple discord bot 
