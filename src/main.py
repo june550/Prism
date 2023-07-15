@@ -1,10 +1,10 @@
 import logging
+import os
 
 import disnake
 from disnake.ext import commands
 
 import config
-
 
 logger = logging.getLogger("disnake")
 logger.setLevel(logging.DEBUG)
@@ -26,7 +26,7 @@ async def on_ready():
     print(f"Logged in as {bot.user} | Using disnake {disnake.__version__}")
     print("----------------------------------------------\n")
 
-bot.load_extension("cogs.general")
-bot.load_extension("cogs.sudo")
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+bot.load_extensions("cogs/")
 
 bot.run(config.TOKEN)
