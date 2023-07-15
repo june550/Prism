@@ -21,7 +21,7 @@ class General(commands.Cog):
     async def avatar(self, inter: disnake.AppCmdInter):
         pass
     
-    
+
     @avatar.sub_command()
     async def user(inter: disnake.AppCmdInter, user: disnake.User | disnake.Member = None):
         
@@ -103,20 +103,25 @@ class General(commands.Cog):
 
 
     @commands.slash_command()
-    async def whois(self, inter: disnake.AppCmdInter, user: disnake.User | disnake.Member = None):
+    async def info(self, inter: disnake.AppCmdInter):
+        pass
+    
+    
+    @info.sub_command()
+    async def user(inter: disnake.AppCmdInter, user: disnake.User | disnake.Member = None):
         
         """
-        Get information about a user
+        Get info about a user
 
         Parameters
         ----------
-        user: User to get information about
+        user: User to get info about
         """
         
         if user is None:
             user = inter.author
          
-        embed = disnake.Embed(color=config.SUCCESS)
+        embed = disnake.Embed(color=config.SUCCESS, title="User Info")
         embed.set_author(name=user, icon_url=user.avatar or user.default_avatar)
         embed.set_thumbnail(user.avatar or user.default_avatar)
         
@@ -133,7 +138,6 @@ class General(commands.Cog):
         )
         
         if isinstance(user, disnake.Member):
-
             embed.add_field(
                 name="Joined",
                 value=disnake.utils.format_dt(user.joined_at, style="R"),
@@ -156,8 +160,60 @@ class General(commands.Cog):
                 )
 
         await inter.send(embed=embed)
+
+
+    @info.sub_command()
+    async def guild(inter: disnake.AppCmdInter):
+        
+        """Get info about the current guild"""
+        
+        guild = inter.guild
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title="Guild Info", 
+        )
+        
+        embed.set_author(name=guild.name, icon_url=guild.icon)
+        embed.set_thumbnail(guild.icon)
+        
+        banner = guild.banner
+        
+        if banner:
+            embed.set_image(banner)
+        
+        embed.add_field(
+            name="ID", 
+            value=guild.id, 
+            inline=False
+        )
+        
+        embed.add_field(
+            name="Owner",
+            value=guild.owner.mention,
+            inline=False
+        )
+        
+        embed.add_field(
+            name="Created",
+            value=disnake.utils.format_dt(guild.created_at, style="R"),
+            inline=False
+        )
+        
+        embed.add_field(
+            name="Members",
+            value=guild.member_count,
+            inline=False
+        )
+        
+        embed.add_field(
+            name="Boost Level",
+            value=guild.premium_tier,
+            inline=False
+        )
             
-    
+        await inter.send(embed=embed)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(General(bot))
