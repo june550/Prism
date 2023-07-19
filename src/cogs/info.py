@@ -151,12 +151,6 @@ class Info(commands.Cog):
         )
         
         embed.add_field(
-            name="ID",
-            value=self.bot.user.id,
-            inline=False,
-        )
-        
-        embed.add_field(
             name="Owner",
             value=self.bot.owner
         )
