@@ -1,9 +1,11 @@
+import asyncio
+import random
+
 import disnake
 from disnake.ext import commands
+from owoify.owoify import Owoness, owoify
 
 import config
-import random
-import asyncio
 
 
 class Fun(commands.Cog):
@@ -151,8 +153,27 @@ class Fun(commands.Cog):
             embed=embed, 
             components=[]
         )
+    
+
+    @fun.sub_command()
+    async def owoify(inter: disnake.AppCmdInter, text: str, 
+                     level: str = commands.Param(choices=["owo", "uwu", "uvu"])):
+        
+        """
+        Owoify some text
+
+        Parameters
+        ----------
+        text: The text to owoify
+        level: The level of owoification to use
+        """
+        
+        levels = {"owo": Owoness.Owo, "uwu": Owoness.Uwu, "uvu": Owoness.Uvu}
+        
+        owoified_text = owoify(text, levels[level])
+        await inter.send(owoified_text)
             
-             
+    
 def setup(bot: commands.Bot):
     bot.add_cog(Fun(bot))
     print(f"Loaded {__name__}")
