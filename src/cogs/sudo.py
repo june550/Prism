@@ -24,7 +24,7 @@ class Sudo(commands.Cog):
         embed = disnake.Embed(
             color=config.SUCCESS, 
             title="Shutdown Requested", 
-            description="Shutting down... Cya later!"
+            description="Shutting down... Cya later! 👋"
         )
         
         await inter.send(embed=embed)
