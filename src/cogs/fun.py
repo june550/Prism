@@ -24,10 +24,12 @@ class Fun(commands.Cog):
         
         """Flip a coin"""
         
+        outcome = random.choice(["heads", "tails"])
+        
         embed = disnake.Embed(
             color=config.SUCCESS, 
             title="Coinflip",
-            description=f"{inter.author.mention} flipped a coin and got **{random.choice(['heads', 'tails'])}**!"
+            description=f"{inter.author.mention} flipped a coin and got **{outcome}**!"
         )
         
         await inter.send(embed=embed)
@@ -160,7 +162,7 @@ class Fun(commands.Cog):
                      level: str = commands.Param(choices=["owo", "uwu", "uvu"])):
         
         """
-        Owoify some text
+        Owoify ywour text :3
 
         Parameters
         ----------
@@ -172,8 +174,16 @@ class Fun(commands.Cog):
         
         owoified_text = owoify(text, levels[level])
         await inter.send(owoified_text)
-            
     
+    
+    @fun.sub_command()
+    async def clapify(inter: disnake.AppCmdInter, *, text: str):
+        
+        """Add 👏 claps 👏 between 👏 your 👏 words 👏"""
+        
+        await inter.send(" 👏 ".join(text.split()))
+    
+
 def setup(bot: commands.Bot):
     bot.add_cog(Fun(bot))
     print(f"Loaded {__name__}")
