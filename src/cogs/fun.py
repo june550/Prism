@@ -48,10 +48,10 @@ class Fun(commands.Cog):
         """
         
         if sides > 100:
-            raise commands.BadArgument("The number of sides must be less than or equal to 100.")
+            raise commands.BadArgument(f"your amount of sides ({sides}) is greater than the limit of 100.")
         
         if amount > 20:
-            raise commands.BadArgument("The number of dice to roll must be less than or equal to 20.")
+            raise commands.BadArgument(f"your amount of dice ({amount}) is greater than the limit of 20.")
         
         outcome = []
         for i in range(amount):
@@ -119,6 +119,13 @@ class Fun(commands.Cog):
                 "button_click", timeout=45, check=check)
             
         except asyncio.TimeoutError:
+            embed = disnake.Embed(
+                color=config.ERROR,
+                title="Timed Out",
+                description="You took longer than 45 seconds to respond, so I cancelled the game."
+            )
+            
+            await msg.edit(embed=embed, components=[])
             return
         
         user_choice = button_inter.component.custom_id
@@ -159,7 +166,7 @@ class Fun(commands.Cog):
 
     @fun.sub_command()
     async def owoify(inter: disnake.AppCmdInter, text: str, 
-                     level: str = commands.Param(choices=["owo", "uwu", "uvu"])):
+                     level: str = commands.Param(choices=["uvu", "uwu", "owo"])):
         
         """
         Owoify ywour text :3
@@ -182,7 +189,21 @@ class Fun(commands.Cog):
         """Add 👏 claps 👏 between 👏 your 👏 words 👏"""
         
         await inter.send(" 👏 ".join(text.split()))
-    
+
+
+    @fun.error
+    async def fun_error(self, inter: disnake.AppCmdInter, error: commands.CommandError):
+        
+        if isinstance(error, commands.BadArgument):
+            
+            embed = disnake.Embed(
+                color=config.ERROR,
+                title="Error",
+                description=error
+            )
+            
+            await inter.send(embed=embed, ephemeral=True)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Fun(bot))
