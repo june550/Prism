@@ -10,3 +10,7 @@ TOKEN = os.getenv("TOKEN")
 SUCCESS = 0x4aaeff
 WARNING = 0xffcf4a
 ERROR = 0xff4a4a
+
+# api keys
+CAT_API_KEY = os.getenv("CAT_API_KEY")
+DOG_API_KEY = os.getenv("DOG_API_KEY")

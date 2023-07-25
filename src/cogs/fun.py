@@ -2,6 +2,7 @@ import asyncio
 import random
 
 import disnake
+import requests
 from disnake.ext import commands
 from owoify.owoify import Owoness, owoify
 
@@ -177,7 +178,7 @@ class Fun(commands.Cog):
         level: The level of owoification to use
         """
         
-        levels = {"owo": Owoness.Owo, "uwu": Owoness.Uwu, "uvu": Owoness.Uvu}
+        levels = {"uvu": Owoness.Uvu, "uwu": Owoness.Uwu, "owo": Owoness.Owo}
         
         owoified_text = owoify(text, levels[level])
         await inter.send(owoified_text)
@@ -187,10 +188,55 @@ class Fun(commands.Cog):
     async def clapify(inter: disnake.AppCmdInter, *, text: str):
         
         """Add 👏 claps 👏 between 👏 your 👏 words 👏"""
-        
         await inter.send(" 👏 ".join(text.split()))
 
 
+    @fun.sub_command()
+    async def cat(inter: disnake.AppCmdInter):
+        
+        """Get a random image of a cat"""
+        
+        api_key = config.CAT_API_KEY
+        
+        headers = {"x-api-key": api_key}
+        url = f"https://api.thecatapi.com/v1/images/search/"
+        
+        cat_img = requests.get(url, headers=headers).json()[0]["url"]
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title=f"Here's a cat for you, {inter.author.display_name}!"
+        )
+        
+        embed.set_footer(text="Powered by TheCatAPI")
+        
+        embed.set_image(url=cat_img)
+        await inter.send(embed=embed)
+        
+        
+    @fun.sub_command()
+    async def dog(inter: disnake.AppCmdInter):
+        
+        """Get a random image of a dog"""
+        
+        api_key = config.DOG_API_KEY
+        
+        headers = {"x-api-key": api_key}
+        url = f"https://api.thedogapi.com/v1/images/search/"
+        
+        cat_img = requests.get(url, headers=headers).json()[0]["url"]
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title=f"Here's a dog for you, {inter.author.display_name}!"
+        )
+        
+        embed.set_footer(text="Powered by TheDogAPI")
+        
+        embed.set_image(url=cat_img)
+        await inter.send(embed=embed)
+    
+    
     @fun.error
     async def fun_error(self, inter: disnake.AppCmdInter, error: commands.CommandError):
         
