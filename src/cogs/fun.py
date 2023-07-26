@@ -208,7 +208,7 @@ class Fun(commands.Cog):
             title=f"Here's a cat for you, {inter.author.display_name}!"
         )
         
-        embed.set_footer(text="Powered by TheCatAPI")
+        embed.set_footer(text="Powered by TheCatAPI 🐱")
         
         embed.set_image(url=cat_img)
         await inter.send(embed=embed)
@@ -224,16 +224,16 @@ class Fun(commands.Cog):
         headers = {"x-api-key": api_key}
         url = f"https://api.thedogapi.com/v1/images/search/"
         
-        cat_img = requests.get(url, headers=headers).json()[0]["url"]
+        dog_img = requests.get(url, headers=headers).json()[0]["url"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
             title=f"Here's a dog for you, {inter.author.display_name}!"
         )
         
-        embed.set_footer(text="Powered by TheDogAPI")
+        embed.set_footer(text="Powered by TheDogAPI 🐶")
         
-        embed.set_image(url=cat_img)
+        embed.set_image(url=dog_img)
         await inter.send(embed=embed)
     
     
