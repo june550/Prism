@@ -28,7 +28,7 @@ class Sudo(commands.Cog):
         )
         
         await inter.send(embed=embed)
-        self.bot.close()
+        await self.bot.close()
     
      
     @sudo.error
