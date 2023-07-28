@@ -18,7 +18,7 @@ bot = commands.InteractionBot(
     reload=True,
     intents=intents,
     activity=disnake.Game(name="Code"),
-    test_guilds=[1120835560773271552, 628722633374040086, 896797741278171156]
+    test_guilds=[1120835560773271552, 1127759873636061234]
 )
 
 @bot.event

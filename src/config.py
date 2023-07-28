@@ -2,8 +2,9 @@ import os
 
 from dotenv import load_dotenv
 
-# bot token
 load_dotenv()
+
+# bot token
 TOKEN = os.getenv("TOKEN")
 
 # embed colors

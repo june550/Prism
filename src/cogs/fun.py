@@ -8,6 +8,11 @@ from owoify.owoify import Owoness, owoify
 
 import config
 
+# thank you to these awesome APIs:
+# TheCatAPI: https://thecatapi.com/
+# TheDogAPI: https://thedogapi.com/
+# random-d.uk: https://random-d.uk/
+# randomfox.ca: https://randomfox.ca/
 
 class Fun(commands.Cog):
 
@@ -209,7 +214,6 @@ class Fun(commands.Cog):
         )
         
         embed.set_footer(text="Powered by TheCatAPI 🐱")
-        
         embed.set_image(url=cat_img)
         await inter.send(embed=embed)
         
@@ -232,8 +236,45 @@ class Fun(commands.Cog):
         )
         
         embed.set_footer(text="Powered by TheDogAPI 🐶")
-        
         embed.set_image(url=dog_img)
+        await inter.send(embed=embed)
+    
+    
+    @fun.sub_command()
+    async def duck(inter: disnake.AppCmdInter):
+        
+        """Get a random image of a duck"""
+        
+        url = "https://random-d.uk/api/random"
+        
+        duck_img = requests.get(url).json()["url"]
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title=f"Here's a duck for you, {inter.author.display_name}!"
+        )
+        
+        embed.set_footer(text="Powered by random-d.uk 🦆")
+        embed.set_image(url=duck_img)
+        await inter.send(embed=embed)
+    
+    
+    @fun.sub_command()
+    async def fox(inter: disnake.AppCmdInter):
+        
+        """Get a random image of a fox"""
+        
+        url = "https://randomfox.ca/floof/"
+        
+        fox_img = requests.get(url).json()["image"]
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title=f"Here's a fox for you, {inter.author.display_name}!"
+        )
+        
+        embed.set_footer(text="Powered by randomfox.ca 🦊")
+        embed.set_image(url=fox_img)
         await inter.send(embed=embed)
     
     
