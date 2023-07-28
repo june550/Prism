@@ -8,17 +8,17 @@ class Info(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        
-    @commands.slash_command()
-    async def ping(self, inter: disnake.AppCmdInter):
-        
-        """Get the bot's current websocket latency"""
-        await inter.response.send_message(f"Pong! {round(self.bot.latency * 1000)}ms")
-    
+
     
     @commands.slash_command()
     async def info(self, inter: disnake.AppCmdInter):
         pass
+    
+    
+    @info.sub_command()
+    async def ping(self, inter: disnake.AppCmdInter):
+        """Get the bot's current websocket latency"""
+        await inter.response.send_message(f"Pong! {round(self.bot.latency * 1000)}ms")
     
     
     @info.sub_command()
