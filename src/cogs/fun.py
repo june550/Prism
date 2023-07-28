@@ -42,7 +42,8 @@ class Fun(commands.Cog):
         
     
     @fun.sub_command()
-    async def roll(inter: disnake.AppCmdInter, sides: int, amount: int = 1):
+    async def roll(inter: disnake.AppCmdInter, 
+                   sides: commands.Range[int, 0, 100], amount: commands.Range[int, 0, 20]):
         
         """
         Roll some dice
@@ -52,12 +53,6 @@ class Fun(commands.Cog):
         sides: The number of sides the dice should have (limit of 100)
         amount: The number of dice to roll (limit of 20)
         """
-        
-        if sides > 100:
-            raise commands.BadArgument(f"your amount of sides ({sides}) is greater than the limit of 100.")
-        
-        if amount > 20:
-            raise commands.BadArgument(f"your amount of dice ({amount}) is greater than the limit of 20.")
         
         outcome = []
         for i in range(amount):
@@ -171,7 +166,7 @@ class Fun(commands.Cog):
     
 
     @fun.sub_command()
-    async def owoify(inter: disnake.AppCmdInter, text: str, 
+    async def owoify(inter: disnake.AppCmdInter, text: commands.String[str, 0, 1500],
                      level: str = commands.Param(choices=["uvu", "uwu", "owo"])):
         
         """
@@ -190,7 +185,7 @@ class Fun(commands.Cog):
     
     
     @fun.sub_command()
-    async def clapify(inter: disnake.AppCmdInter, *, text: str):
+    async def clapify(inter: disnake.AppCmdInter, text: commands.String[str, 0, 1500]):
         
         """Add 👏 claps 👏 between 👏 your 👏 words 👏"""
         await inter.send(" 👏 ".join(text.split()))
