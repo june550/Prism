@@ -13,6 +13,7 @@ import config
 # TheDogAPI: https://thedogapi.com/
 # random-d.uk: https://random-d.uk/
 # randomfox.ca: https://randomfox.ca/
+# xkcd: https://xkcd.com/
 
 class Fun(commands.Cog):
 
@@ -208,8 +209,8 @@ class Fun(commands.Cog):
             title=f"Here's a cat for you, {inter.author.display_name}!"
         )
         
-        embed.set_footer(text="Powered by TheCatAPI 🐱")
         embed.set_image(url=cat_img)
+        embed.set_footer(text="Powered by TheCatAPI 🐱")
         await inter.send(embed=embed)
         
         
@@ -230,8 +231,8 @@ class Fun(commands.Cog):
             title=f"Here's a dog for you, {inter.author.display_name}!"
         )
         
-        embed.set_footer(text="Powered by TheDogAPI 🐶")
         embed.set_image(url=dog_img)
+        embed.set_footer(text="Powered by TheDogAPI 🐶")
         await inter.send(embed=embed)
     
     
@@ -273,6 +274,65 @@ class Fun(commands.Cog):
         await inter.send(embed=embed)
     
     
+    @fun.sub_command_group()
+    async def xkcd(self, inter: disnake.AppCmdInter):
+        pass
+    
+    
+    @xkcd.sub_command()
+    async def latest(self, inter: disnake.AppCmdInter):
+        
+        """Get the latest xkcd comic"""
+        
+        url = "https://xkcd.com/info.0.json"
+        resp = requests.get(url).json()
+        
+        num = resp["num"]
+        title = resp["title"]
+        alt = resp["alt"]
+        img = resp["img"]
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title=title,
+            description=alt
+        )
+        
+        embed.set_footer(text=f"xkcd #{num}")
+        embed.set_image(img)
+        await inter.send(embed=embed)
+      
+      
+    @xkcd.sub_command()
+    async def random(self, inter: disnake.AppCmdInter):
+        
+        """Get a random xkcd comic"""
+        
+        url = "https://xkcd.com/info.0.json"
+        resp = requests.get(url).json()
+        
+        total_comics = resp["num"]
+        random_comic = random.randint(1, total_comics)
+        
+        url = f"https://xkcd.com/{random_comic}/info.0.json"
+        resp = requests.get(url).json()
+        
+        num = resp["num"]
+        title = resp["title"]
+        alt = resp["alt"]
+        img = resp["img"]
+        
+        embed = disnake.Embed(
+            color=config.SUCCESS,
+            title=title,
+            description=alt
+        )
+        
+        embed.set_footer(text=f"xkcd #{num}")
+        embed.set_image(img)
+        await inter.send(embed=embed)
+        
+
     @fun.error
     async def fun_error(self, inter: disnake.AppCmdInter, error: commands.CommandError):
         
