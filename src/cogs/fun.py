@@ -43,8 +43,11 @@ class Fun(commands.Cog):
         
     
     @fun.sub_command()
-    async def roll(inter: disnake.AppCmdInter, 
-                   sides: commands.Range[int, 0, 100], amount: commands.Range[int, 0, 20]):
+    async def roll(
+        inter: disnake.AppCmdInter, 
+        sides: commands.Range[int, 0, 100], 
+        amount: commands.Range[int, 0, 20]
+    ):
         
         """
         Roll some dice
@@ -167,8 +170,11 @@ class Fun(commands.Cog):
     
 
     @fun.sub_command()
-    async def owoify(inter: disnake.AppCmdInter, text: commands.String[str, 0, 1500],
-                     level: str = commands.Param(choices=["uvu", "uwu", "owo"])):
+    async def owoify(
+        inter: disnake.AppCmdInter, 
+        text: commands.String[str, 0, 1500],
+        level: str = commands.Param(choices=["uvu", "uwu", "owo"])
+    ):
         
         """
         Owoify ywour text :3
@@ -196,13 +202,14 @@ class Fun(commands.Cog):
     async def cat(inter: disnake.AppCmdInter):
         
         """Get a random image of a cat"""
+  
+        resp = requests.get(
+            f"https://api.thecatapi.com/v1/images/search/", 
+            headers={"x-api-key": config.CAT_API_KEY}
+        )
         
-        api_key = config.CAT_API_KEY
-        
-        headers = {"x-api-key": api_key}
-        url = f"https://api.thecatapi.com/v1/images/search/"
-        
-        cat_img = requests.get(url, headers=headers).json()[0]["url"]
+        resp.raise_for_status()
+        cat_img = resp.json()[0]["url"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
@@ -219,12 +226,13 @@ class Fun(commands.Cog):
         
         """Get a random image of a dog"""
         
-        api_key = config.DOG_API_KEY
+        resp = requests.get(
+            f"https://api.thedogapi.com/v1/images/search/", 
+            headers={"x-api-key": config.DOG_API_KEY}
+        )
         
-        headers = {"x-api-key": api_key}
-        url = f"https://api.thedogapi.com/v1/images/search/"
-        
-        dog_img = requests.get(url, headers=headers).json()[0]["url"]
+        resp.raise_for_status()
+        dog_img = resp.json()[0]["url"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
@@ -241,9 +249,9 @@ class Fun(commands.Cog):
         
         """Get a random image of a duck"""
         
-        url = "https://random-d.uk/api/random"
-        
-        duck_img = requests.get(url).json()["url"]
+        resp = requests.get("https://random-d.uk/api/random")
+        resp.raise_for_status()
+        duck_img = resp.json()["url"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
@@ -260,9 +268,9 @@ class Fun(commands.Cog):
         
         """Get a random image of a fox"""
         
-        url = "https://randomfox.ca/floof/"
-        
-        fox_img = requests.get(url).json()["image"]
+        resp = requests.get("https://randomfox.ca/floof/")
+        resp.raise_for_status()
+        fox_img = resp.json()["image"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
@@ -284,13 +292,14 @@ class Fun(commands.Cog):
         
         """Get the latest xkcd comic"""
         
-        url = "https://xkcd.com/info.0.json"
-        resp = requests.get(url).json()
-        
-        num = resp["num"]
-        title = resp["title"]
-        alt = resp["alt"]
-        img = resp["img"]
+        resp = requests.get("https://xkcd.com/info.0.json")
+        resp.raise_for_status()
+        data = resp.json()
+
+        num = data["num"]
+        title = data["title"]
+        alt = data["alt"]
+        img = data["img"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
@@ -301,26 +310,27 @@ class Fun(commands.Cog):
         embed.set_footer(text=f"xkcd #{num}")
         embed.set_image(img)
         await inter.send(embed=embed)
-      
-      
+    
+    
     @xkcd.sub_command()
     async def random(self, inter: disnake.AppCmdInter):
         
         """Get a random xkcd comic"""
         
-        url = "https://xkcd.com/info.0.json"
-        resp = requests.get(url).json()
+        resp = requests.get("https://xkcd.com/info.0.json")
+        resp.raise_for_status()
+        total_comics = resp.json()["num"]
         
-        total_comics = resp["num"]
         random_comic = random.randint(1, total_comics)
         
-        url = f"https://xkcd.com/{random_comic}/info.0.json"
-        resp = requests.get(url).json()
+        resp = requests.get(f"https://xkcd.com/{random_comic}/info.0.json")
+        resp.raise_for_status()
+        data = resp.json()
         
-        num = resp["num"]
-        title = resp["title"]
-        alt = resp["alt"]
-        img = resp["img"]
+        num = data["num"]
+        title = data["title"]
+        alt = data["alt"]
+        img = data["img"]
         
         embed = disnake.Embed(
             color=config.SUCCESS,
