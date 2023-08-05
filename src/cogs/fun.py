@@ -172,7 +172,7 @@ class Fun(commands.Cog):
     @fun.sub_command()
     async def owoify(
         inter: disnake.AppCmdInter, 
-        text: commands.String[str, 0, 1500],
+        text: commands.String[str, 1, 1500],
         level: str = commands.Param(choices=["uvu", "uwu", "owo"])
     ):
         
@@ -192,9 +192,16 @@ class Fun(commands.Cog):
     
     
     @fun.sub_command()
-    async def clapify(inter: disnake.AppCmdInter, text: commands.String[str, 0, 1500]):
+    async def clapify(inter: disnake.AppCmdInter, text: commands.String[str, 1, 1500]):
         
-        """Add 👏 claps 👏 between 👏 your 👏 words 👏"""
+        """
+        Add 👏 claps 👏 between 👏 your 👏 words 👏
+        
+        Parameters
+        ----------
+        text: The text to clapify
+        """
+        
         await inter.send(" 👏 ".join(text.split()))
 
 
